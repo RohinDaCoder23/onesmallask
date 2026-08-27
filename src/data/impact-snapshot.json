@@ -1,0 +1,14 @@
+{
+  "generatedOn": "2026-08-26T00:00:00.000Z",
+  "note": "Committed fallback for the Impact page, so it never shows a broken or empty state when the live database is unreachable or not yet configured. Update requestsReviewed and requestsPublished by hand as you work through the review queue; add a row to `confirmed` only when BOTH the donor and the requester have confirmed the same gift.",
+  "totals": {
+    "requestsReviewed": 0,
+    "requestsPublished": 0,
+    "contactReveals": 0,
+    "confirmedGifts": 0,
+    "confirmedUsd": 0,
+    "firstRevealTs": null,
+    "lastRevealTs": null
+  },
+  "confirmed": []
+}

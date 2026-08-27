@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found — Kindly</title>
+    <style>
+      body{margin:0;background:#faf7f2;color:#1b2723;font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:1.5rem}
+      .box{max-width:32rem;text-align:center;background:#fff;border:1px solid #e8e1d4;border-radius:1.25rem;padding:2.5rem;box-shadow:0 8px 24px -12px rgba(27,39,35,.18)}
+      h1{font-family:Georgia,serif;font-size:1.6rem;margin:0 0 .75rem}
+      p{color:#615645;line-height:1.6;margin:0 0 1.5rem;font-size:.95rem}
+      a{display:inline-block;background:#1f7d57;color:#fff;text-decoration:none;font-weight:600;padding:.75rem 1.5rem;border-radius:999px}
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h1>That page isn't here</h1>
+      <p>
+        Kindly's own links all begin with <code>#/</code>, so this usually means a
+        hand-typed or truncated URL. Everything still works from the home page.
+      </p>
+      <a id="home" href="/kindly.org/">Go to Kindly</a>
+    </div>
+    <script>
+      // GitHub Pages serves this file for any unknown path under the repo.
+      // Derive the site root from where we actually are, so this keeps working
+      // if the repo is renamed or moved to a custom domain.
+      (function () {
+        try {
+          var host = location.hostname;
+          var seg = location.pathname.split("/").filter(Boolean);
+          // On <user>.github.io the first segment is the repo; on a custom
+          // domain (or a <user>.github.io user site) the root is "/".
+          var isProjectSite = /\.github\.io$/i.test(host) && seg.length > 0;
+          var root = isProjectSite ? "/" + seg[0] + "/" : "/";
+          document.getElementById("home").setAttribute("href", root);
+        } catch (e) {
+          /* keep the hard-coded fallback above */
+        }
+      })();
+    </script>
+  </body>
+</html>

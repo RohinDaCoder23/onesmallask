@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+*.local
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+.env
+.env.local
+_archive_prototype/
+
+# Outreach contact list — nonprofit staff emails. Kept OFF the public repo on
+# purpose: publishing a compiled contact list would be a poor way to treat the
+# organizations we are about to email. Lives beside the repo instead.
+outreach/
+
+# Verification screenshots (regenerate with: node verify/check.mjs)
+verify/shots/
+verify/report.txt
