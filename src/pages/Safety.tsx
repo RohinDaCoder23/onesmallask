@@ -182,7 +182,7 @@ export default function Safety() {
           ) : null}
           <a
             href={mailto(
-              "Kindly — reporting a problem",
+              "One Small Ask — reporting a problem",
               "What I want to report:\n\n\nWhich request (link or title):\n\n\nAnything else that would help:\n\n",
             )}
             className="inline-flex items-center justify-center rounded-full border border-sand-300 bg-white px-6 py-3 text-base font-semibold text-ink transition hover:bg-sand-50"

@@ -11,7 +11,7 @@ const container = document.getElementById("root");
 
 if (!container) {
   document.body.innerHTML =
-    '<p style="font-family:system-ui;padding:2rem">Kindly could not start: #root is missing.</p>';
+    '<p style="font-family:system-ui;padding:2rem">One Small Ask could not start: #root is missing.</p>';
 } else {
   createRoot(container).render(
     <StrictMode>
@@ -21,7 +21,7 @@ if (!container) {
           static files only: with real paths, /needs is a 404 until you add a
           redirect hack, and a wrong base path renders a blank white page. Hash
           routing needs no server rules, so this exact build works at
-          username.github.io/kindly, at a custom domain, on Netlify, or opened
+          username.github.io/onesmallask, at a custom domain, on Netlify, or opened
           from disk. Deep links and shared URLs never break.
         */}
         <HashRouter

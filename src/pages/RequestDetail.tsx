@@ -90,7 +90,7 @@ export default function RequestDetail() {
             </div>
           ) : null}
 
-          <div className="prose-kindly mt-6">
+          <div className="prose-osa mt-6">
             <h2 className="text-xl">In their words</h2>
             <p className="whitespace-pre-line">{request.story}</p>
 
@@ -166,7 +166,7 @@ export default function RequestDetail() {
                 </Button>
                 <p className="mt-3 text-xs leading-relaxed text-sand-600">
                   You&rsquo;ll read a short safety screen, then see how to reach {request.name}.
-                  You send the money yourself, directly to them. Kindly never touches it and
+                  You send the money yourself, directly to them. One Small Ask never touches it and
                   cannot recover it.
                 </p>
               </>

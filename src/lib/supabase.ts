@@ -3,7 +3,7 @@ import type { ConfirmedGift, ContactReveal } from "../types";
 /**
  * A ~90-line PostgREST client instead of @supabase/supabase-js.
  *
- * The whole surface Kindly uses is one INSERT and two SELECTs. A hand-written
+ * The whole surface One Small Ask uses is one INSERT and two SELECTs. A hand-written
  * fetch wrapper adds zero KB to the bundle, cannot break on a major-version
  * bump, and lets every call carry an explicit timeout. Nothing here throws —
  * callers get `null` and render the committed fallback.

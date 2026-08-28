@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   override componentDidCatch(error: Error, info: ErrorInfo): void {
     // eslint-disable-next-line no-console
-    console.error(`[kindly] render error in ${this.props.area ?? "app"}`, error, info);
+    console.error(`[onesmallask] render error in ${this.props.area ?? "app"}`, error, info);
   }
 
   override render(): ReactNode {
@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="card mx-auto max-w-lg p-8 text-center">
           <h1 className="text-xl">Something on this page broke</h1>
           <p className="mt-3 text-sm leading-relaxed text-sand-700">
-            The rest of Kindly still works. You can reload, or go back to the needs list — and
+            The rest of One Small Ask still works. You can reload, or go back to the needs list — and
             you can always give directly on any organization&rsquo;s own website.
           </p>
           <div className="mt-6 flex flex-col justify-center gap-2 sm:flex-row">
@@ -51,7 +51,7 @@ export class ErrorBoundary extends Component<Props, State> {
               href="./"
               className="inline-flex items-center justify-center rounded-full bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
             >
-              Reload Kindly
+              Reload One Small Ask
             </a>
           </div>
           <p className="mt-6 break-words text-left text-xs text-sand-500">

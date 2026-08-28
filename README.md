@@ -1,4 +1,4 @@
-# Kindly
+# One Small Ask
 
 **Small asks, answered directly.**
 
@@ -6,10 +6,10 @@ Someone posts one specific thing they need — between $5 and $100, in their own
 with a ten-second video of themselves saying it. It is reviewed by a person before it
 appears. Anyone who wants to help reaches them and sends the money themselves.
 
-**Kindly never touches the money.** No payment form, no account, no funds held, no cut
+**One Small Ask never touches the money.** No payment form, no account, no funds held, no cut
 taken. It is a noticeboard, not a fund.
 
-Live: https://rohindacoder23.github.io/kindly.org/
+Live: https://rohindacoder23.github.io/onesmallask/
 Deploying: [DEPLOY.md](./DEPLOY.md) · Running it day to day: [MODERATION.md](./MODERATION.md)
 
 ---
@@ -34,17 +34,17 @@ promise the site makes on `/safety`.
 
 ---
 
-## Why Kindly never handles the money
+## Why One Small Ask never handles the money
 
 A site that collected donations and passed them on would have to hold other people's
 money, register as a charitable solicitor in most states, take a cut to cover processing,
 and be trusted with funds by people who had never heard of it.
 
 Handing the two people a way to reach each other removes all of that. Every dollar
-arrives, it arrives immediately, and nothing about Kindly has to be trusted with funds
+arrives, it arrives immediately, and nothing about One Small Ask has to be trusted with funds
 because it never has any.
 
-The cost is real and the site states it plainly: Kindly cannot reverse a payment and
+The cost is real and the site states it plainly: One Small Ask cannot reverse a payment and
 cannot see one happen. `/safety` is built around admitting that, and `/impact` refuses to
 call anything money until two people independently confirm it.
 
@@ -87,7 +87,7 @@ verify/run.sh           The whole verification suite, one command
 ### Decisions worth knowing about
 
 **`base: "./"` in `vite.config.ts`.** Relative asset paths, so the same `dist/` works at
-`username.github.io/kindly.org`, at a custom domain, on Netlify, or opened from disk. This
+`username.github.io/onesmallask`, at a custom domain, on Netlify, or opened from disk. This
 removes the single most common cause of a blank-white GitHub Pages deploy.
 
 **`HashRouter`, not `BrowserRouter`.** GitHub Pages serves static files only, so real
@@ -132,7 +132,7 @@ The same is true of the Google Forms. With `FORMS` unset, the affected pages sho
 | **People asked how to help** | Someone read the safety screen and was shown how to reach a requester. **Not money.** |
 | **Confirmed by both people** | A donor confirmed sending and a requester confirmed receiving the same gift. |
 
-Kindly is not part of the payment, so there is no receipt and no webhook. Two independent
+One Small Ask is not part of the payment, so there is no receipt and no webhook. Two independent
 people saying the same thing happened is the only honest evidence available — and one side
 alone would be the weaker side, since the recipient has every reason to confirm and only
 the donor can corroborate the amount.
@@ -188,7 +188,7 @@ bash verify/run.sh
 
 ## Legal posture
 
-Kindly is an independent project. It is not a charity, a bank, a payment processor, an
+One Small Ask is an independent project. It is not a charity, a bank, a payment processor, an
 escrow service, or a party to any transfer between two people who find each other here. It
 holds no money at any point. Gifts made through it are personal gifts between individuals
 and are not tax-deductible.

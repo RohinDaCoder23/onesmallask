@@ -1,16 +1,16 @@
 /**
- * Kindly domain model.
+ * One Small Ask domain model.
  *
- * The rule that governs this whole file: KINDLY NEVER TOUCHES MONEY AND NEVER
+ * The rule that governs this whole file: ONE SMALL ASK NEVER TOUCHES MONEY AND NEVER
  * BROKERS A PAYMENT. A requester posts a small, specific need. A donor who
  * wants to help is shown how to reach them. The two of them settle it directly,
  * on a payment app of their own choosing, entirely at their own volition.
  *
- * Kindly's only jobs are: review requests before they appear, present them
+ * One Small Ask's only jobs are: review requests before they appear, present them
  * honestly, warn both sides clearly, and count what both sides confirm.
  */
 
-/** Hard cap. Kindly is deliberately for small, concrete asks. */
+/** Hard cap. One Small Ask is deliberately for small, concrete asks. */
 export const MIN_ASK_USD = 5;
 export const MAX_ASK_USD = 100;
 
@@ -40,7 +40,7 @@ export const CATEGORIES: ReadonlyArray<{
 ];
 
 /**
- * How a donor reaches the requester. Kindly shows this only after the donor has
+ * How a donor reaches the requester. One Small Ask shows this only after the donor has
  * read the safety screen, and never handles the transfer itself.
  *
  * Zelle is deliberately absent. Zelle transfers reveal the recipient's legal
@@ -124,7 +124,7 @@ export interface ContactReveal {
 }
 
 /**
- * A gift BOTH sides confirmed. This is the only figure Kindly ever calls
+ * A gift BOTH sides confirmed. This is the only figure One Small Ask ever calls
  * completed. One side alone is never enough — the donor confirms they sent it,
  * the requester confirms they received it, and only a matched pair counts.
  */

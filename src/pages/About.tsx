@@ -12,7 +12,7 @@ export default function About() {
         title={`What ${SITE.name} is, and the things it deliberately isn't`}
       />
 
-      <div className="prose-kindly mt-8 max-w-2xl">
+      <div className="prose-osa mt-8 max-w-2xl">
         <p>
           {SITE.name} is a noticeboard. Someone posts one specific thing they need — between{" "}
           {usd(MIN_ASK_USD)} and {usd(MAX_ASK_USD)}, in their own words, with a ten-second video of

@@ -66,19 +66,19 @@
     background-size: 22px 22px;
   }
 
-  .prose-kindly p {
+  .prose-osa p {
     @apply mb-4 leading-relaxed text-sand-800;
   }
-  .prose-kindly h2 {
+  .prose-osa h2 {
     @apply mb-3 mt-10 text-2xl;
   }
-  .prose-kindly h3 {
+  .prose-osa h3 {
     @apply mb-2 mt-7 text-lg font-semibold;
   }
-  .prose-kindly ul {
+  .prose-osa ul {
     @apply mb-4 list-disc space-y-2 pl-5 text-sand-800;
   }
-  .prose-kindly a {
+  .prose-osa a {
     @apply font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800;
   }
 }

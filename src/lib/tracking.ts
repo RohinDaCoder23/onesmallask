@@ -14,9 +14,9 @@ import {
   trackingConfigured,
 } from "./supabase";
 
-const K_SESSION = "kindly.session.v1";
-const K_REVEALS = "kindly.reveals.v1";
-const K_QUEUE = "kindly.queue.v1";
+const K_SESSION = "osa.session.v1";
+const K_REVEALS = "osa.reveals.v1";
+const K_QUEUE = "osa.queue.v1";
 
 /** Hard caps so a shared or kiosk browser can never blow the storage quota. */
 const MAX_LOCAL = 500;
@@ -67,8 +67,8 @@ export interface RevealInput {
 /**
  * Records that a donor was shown how to reach a requester.
  *
- * This is an INTENT signal and nothing more. Kindly cannot see the payment —
- * the two people settle it themselves, on an app Kindly has no access to — so
+ * This is an INTENT signal and nothing more. One Small Ask cannot see the payment —
+ * the two people settle it themselves, on an app One Small Ask has no access to — so
  * this number must never be presented as money moved. The Impact page keeps it
  * in a separate column from confirmed gifts for exactly that reason.
  *

@@ -2,7 +2,7 @@ import type { HelpRequest } from "../types";
 
 /**
  * ============================================================================
- * EVERY LIVE REQUEST ON KINDLY LIVES IN THIS FILE.
+ * EVERY LIVE REQUEST ON ONE SMALL ASK LIVES IN THIS FILE.
  * ============================================================================
  *
  * There is no database and no submission endpoint. A request reaches this array
@@ -44,7 +44,7 @@ import type { HelpRequest } from "../types";
  *    You do not need them, you cannot secure them, and holding them creates
  *    liability far larger than this project.
  *  - $5 to $100. The cap is a safety feature: it keeps the loss small when
- *    something does go wrong, and it keeps Kindly out of the territory where
+ *    something does go wrong, and it keeps One Small Ask out of the territory where
  *    money-transmission and charitable-solicitation rules start to bite.
  *  - No Zelle. A Zelle transfer reveals the recipient's legal bank-account name
  *    and the phone or email tied to it. That is more exposure than a person in

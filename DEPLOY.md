@@ -1,7 +1,7 @@
-# Deploying Kindly — exact steps
+# Deploying One Small Ask — exact steps
 
-Repo: **`RohinDaCoder23/kindly.org`**
-Live URL after step 3: **https://rohindacoder23.github.io/kindly.org/**
+Repo: **`RohinDaCoder23/onesmallask`**
+Live URL after step 3: **https://rohindacoder23.github.io/onesmallask/**
 
 Nothing here has been committed or pushed for you. Everything below is yours to run.
 
@@ -26,7 +26,7 @@ Do this before pushing. If it fails here, it will fail in CI too, and the error
 message is much easier to read locally.
 
 ```bash
-cd "/Users/rohinkethipally/Claude/Projects/DONATION APP/WEBSITE PROJECT/kindly.org"
+cd "/Users/rohinkethipally/Claude/Projects/DONATION APP/WEBSITE PROJECT/onesmallask"
 
 npm install
 npm run typecheck     # must print nothing and exit cleanly
@@ -49,18 +49,18 @@ bash verify/run.sh
 
 ## Step 2 — Push the code
 
-Your repo already exists at `https://github.com/RohinDaCoder23/kindly.org.git`.
+Your repo already exists at `https://github.com/RohinDaCoder23/onesmallask.git`.
 
 **If the repo is completely empty** (no README, no commits):
 
 ```bash
-cd "/Users/rohinkethipally/Claude/Projects/DONATION APP/WEBSITE PROJECT/kindly.org"
+cd "/Users/rohinkethipally/Claude/Projects/DONATION APP/WEBSITE PROJECT/onesmallask"
 
 git init
 git branch -M main
 git add .
-git commit -m "Kindly: needs board for Front Range shelters and food banks"
-git remote add origin https://github.com/RohinDaCoder23/kindly.org.git
+git commit -m "One Small Ask: needs board for Front Range shelters and food banks"
+git remote add origin https://github.com/RohinDaCoder23/onesmallask.git
 git push -u origin main
 ```
 
@@ -68,15 +68,15 @@ git push -u origin main
 above will be rejected. Pull the remote history in first:
 
 ```bash
-cd "/Users/rohinkethipally/Claude/Projects/DONATION APP/WEBSITE PROJECT/kindly.org"
+cd "/Users/rohinkethipally/Claude/Projects/DONATION APP/WEBSITE PROJECT/onesmallask"
 
 git init
 git branch -M main
-git remote add origin https://github.com/RohinDaCoder23/kindly.org.git
+git remote add origin https://github.com/RohinDaCoder23/onesmallask.git
 git fetch origin
 git pull --rebase origin main    # or: git pull origin main --allow-unrelated-histories
 git add .
-git commit -m "Kindly: needs board for Front Range shelters and food banks"
+git commit -m "One Small Ask: needs board for Front Range shelters and food banks"
 git push -u origin main
 ```
 
@@ -85,7 +85,7 @@ HTTPS. Either install the GitHub CLI (`brew install gh`, then `gh auth login`),
 or create a personal access token at
 https://github.com/settings/tokens and paste that as the password.
 
-**Verify before moving on:** open https://github.com/RohinDaCoder23/kindly.org
+**Verify before moving on:** open https://github.com/RohinDaCoder23/onesmallask
 and confirm you can see `src/`, `package.json`, and `.github/workflows/deploy.yml`.
 If `.github/` is missing, your git client skipped the dotfolder — run
 `git add .github -f` and commit again.
@@ -97,7 +97,7 @@ If `.github/` is missing, your git client skipped the dotfolder — run
 This is the one part that is not in the code, and skipping it is the most common
 reason a deploy "does nothing."
 
-1. Go to https://github.com/RohinDaCoder23/kindly.org/settings/pages
+1. Go to https://github.com/RohinDaCoder23/onesmallask/settings/pages
 2. Under **Build and deployment → Source**, open the dropdown and choose
    **GitHub Actions**. (Not "Deploy from a branch." Not `gh-pages`.)
 3. That's the whole setting. There is no Save button — it applies immediately.
@@ -106,10 +106,10 @@ reason a deploy "does nothing."
 
 ## Step 4 — Watch the first deploy
 
-1. Go to https://github.com/RohinDaCoder23/kindly.org/actions
+1. Go to https://github.com/RohinDaCoder23/onesmallask/actions
 2. You should see a run called **Deploy to GitHub Pages**. Click it.
 3. It runs two jobs, `build` then `deploy`, and takes about 60–90 seconds.
-4. Green check on both = live at **https://rohindacoder23.github.io/kindly.org/**
+4. Green check on both = live at **https://rohindacoder23.github.io/onesmallask/**
 
 The very first deploy sometimes takes an extra minute to become reachable even
 after the Action goes green. If you get a 404 immediately, wait 60 seconds and
@@ -131,7 +131,7 @@ Walk this list on the real URL, on a phone as well as a laptop:
 - [ ] **Safety** loads with all three named scams and both "if you are giving" /
       "if you are asking" lists
 - [ ] **Impact** loads and shows zeroes with the two-numbers explanation
-- [ ] Visit a nonsense URL like `.../kindly.org/#/asdf` → the 404 page appears,
+- [ ] Visit a nonsense URL like `.../onesmallask/#/asdf` → the 404 page appears,
       not a blank screen
 - [ ] Open DevTools → Console. Only font warnings are acceptable; nothing red.
 
@@ -164,7 +164,7 @@ what makes the Impact numbers meaningful on an application.
    - **Project URL** (looks like `https://abcdefgh.supabase.co`)
    - **anon / public** key (a long string beginning `eyJ`)
 5. In GitHub, go to
-   https://github.com/RohinDaCoder23/kindly.org/settings/secrets/actions
+   https://github.com/RohinDaCoder23/onesmallask/settings/secrets/actions
    and add two repository secrets, named exactly:
    - `VITE_SUPABASE_URL` → the Project URL
    - `VITE_SUPABASE_ANON_KEY` → the anon key

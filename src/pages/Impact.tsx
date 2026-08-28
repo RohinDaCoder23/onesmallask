@@ -263,7 +263,7 @@ export default function Impact() {
                     variant="secondary"
                     size="sm"
                     onClick={() =>
-                      downloadCsv("kindly-my-activity.csv", revealsToCsv(localReveals()))
+                      downloadCsv("onesmallask-my-activity.csv", revealsToCsv(localReveals()))
                     }
                   >
                     Export (CSV)

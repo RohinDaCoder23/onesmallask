@@ -13,7 +13,7 @@ const NAV = [
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2.5" aria-label="Kindly, home">
+    <Link to="/" className="flex items-center gap-2.5" aria-label="One Small Ask, home">
       <span
         aria-hidden
         className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-cream"

@@ -1,5 +1,5 @@
 -- =====================================================================
--- Kindly — tracking schema
+-- One Small Ask — tracking schema
 -- Paste this whole file into Supabase → SQL Editor → New query → Run.
 -- Safe to run more than once.
 --

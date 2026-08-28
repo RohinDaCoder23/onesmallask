@@ -1,4 +1,4 @@
-# Running Kindly
+# Running One Small Ask
 
 The site is static. Nothing appears on it until you put it there, and nothing comes down
 until you take it down — except expiry, which is automatic. This document is the whole
@@ -25,7 +25,7 @@ Put the safety rules at the top of the form as a description, not buried at the 
 
 | # | Question | Type | Notes |
 |---|---|---|---|
-| 1 | Are you 18 or older? | Multiple choice, **required** | "No" → branch to a section that says Kindly can't accept requests from under-18s, gives 211, and ends the form. This is not negotiable. |
+| 1 | Are you 18 or older? | Multiple choice, **required** | "No" → branch to a section that says One Small Ask can't accept requests from under-18s, gives 211, and ends the form. This is not negotiable. |
 | 2 | First name, or the name you want shown | Short answer, required | Say explicitly: not your full legal name |
 | 3 | Your city or area | Short answer, required | Say explicitly: not your address, and don't name where you're staying |
 | 4 | In one line, what do you need? | Short answer, required | |
@@ -39,7 +39,7 @@ Put the safety rules at the top of the form as a description, not buried at the 
 | 12 | How should someone pay you? | Multiple choice, required | Cash App / PayPal / Venmo. **No Zelle** — say why: it reveals your legal bank name |
 | 13 | Your handle or PayPal.me link | Short answer, required | |
 | 14 | An email or phone we can reach you at | Short answer, required | Say clearly: **never published**, only used to contact you about your request |
-| 15 | Tick to confirm you understand | Checkboxes, required | Four boxes: Kindly never handles the money · I will never send money back to anyone who says they overpaid · I will never share bank logins, card numbers or my SSN · everything here is true and I am posting it myself |
+| 15 | Tick to confirm you understand | Checkboxes, required | Four boxes: One Small Ask never handles the money · I will never send money back to anyone who says they overpaid · I will never share bank logins, card numbers or my SSN · everything here is true and I am posting it myself |
 
 > **The video upload is your biggest drop-off.** Google Forms file upload requires the
 > person to be signed into a Google account, which is a real barrier for someone in
@@ -159,7 +159,7 @@ should be left wondering.
 ## Part 4 — Publishing an approved request
 
 ```bash
-cd "path/to/kindly.org"
+cd "path/to/onesmallask"
 
 # 1. Scramble their handle — never paste it in plain text
 node scripts/scramble.mjs '$theircashtag'

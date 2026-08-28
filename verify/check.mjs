@@ -1,7 +1,7 @@
 import { chromium } from "playwright";
 import fs from "node:fs";
 
-const BASE = process.env.BASE_URL ?? "http://127.0.0.1:8099/kindly.org/";
+const BASE = process.env.BASE_URL ?? "http://127.0.0.1:8099/onesmallask/";
 const ROUTES = [
   ["landing", "#/"],
   ["requests", "#/requests"],

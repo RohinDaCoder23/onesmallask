@@ -40,7 +40,7 @@ const RULES: ReadonlyArray<{ head: string; body: string }> = [
   {
     head: "This money cannot be undone",
     body:
-      "Cash App, Venmo and PayPal to a person are the same as handing over cash. There is no buyer protection and no chargeback. Kindly cannot reverse it, refund it, or recover it — Kindly is not part of the transfer at all.",
+      "Cash App, Venmo and PayPal to a person are the same as handing over cash. There is no buyer protection and no chargeback. One Small Ask cannot reverse it, refund it, or recover it — One Small Ask is not part of the transfer at all.",
   },
   {
     head: "Never send any of it back",
@@ -171,7 +171,7 @@ export function ContactProvider({ children }: { children: ReactNode }) {
                   Helping {request.name} with {usd(request.amountUsd)}
                 </h2>
                 <p className="mt-1.5 text-sm leading-relaxed text-sand-700">
-                  Kindly does not handle this money and never will. You will send it directly to{" "}
+                  One Small Ask does not handle this money and never will. You will send it directly to{" "}
                   {request.name}, on an app of your choosing, exactly as if you had met in person.
                   Please read these five things first.
                 </p>
@@ -201,7 +201,7 @@ export function ContactProvider({ children }: { children: ReactNode }) {
                     className="mt-0.5 h-4 w-4 shrink-0 accent-brand-600"
                   />
                   <span className="text-sm leading-relaxed text-ink">
-                    I have read these, I understand Kindly is not part of the payment and cannot
+                    I have read these, I understand One Small Ask is not part of the payment and cannot
                     recover it, and I am choosing to send money at my own risk.
                   </span>
                 </label>

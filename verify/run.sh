@@ -8,8 +8,8 @@
 set -euo pipefail
 
 PORT="${PORT:-8099}"
-ROOT="/tmp/kindly-verify-$$"
-SITE="$ROOT/kindly.org"        # subpath, so we reproduce the real deploy shape
+ROOT="/tmp/osa-verify-$$"
+SITE="$ROOT/onesmallask"        # subpath, so we reproduce the real deploy shape
 
 command -v node >/dev/null || { echo "node is required"; exit 1; }
 [ -d node_modules/playwright ] || {
@@ -35,9 +35,9 @@ cleanup() {
 trap cleanup EXIT
 
 for _ in $(seq 1 20); do
-  if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/kindly.org/"; then break; fi
+  if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/onesmallask/"; then break; fi
   sleep 0.25
 done
 
 echo "==> Running checks"
-BASE_URL="http://127.0.0.1:$PORT/kindly.org/" node verify/check.mjs
+BASE_URL="http://127.0.0.1:$PORT/onesmallask/" node verify/check.mjs

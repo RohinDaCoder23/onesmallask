@@ -27,7 +27,7 @@ export default function Requests() {
       <SectionHeading
         eyebrow="Open requests"
         title="One small thing, asked for directly"
-        lead="Every request here was reviewed before it appeared: a ten-second video of the person, a reverse-image check on any photo, one detail corroborated, and a screen against everything submitted before. You reach them yourself and send it yourself — Kindly is never in the middle of the money."
+        lead="Every request here was reviewed before it appeared: a ten-second video of the person, a reverse-image check on any photo, one detail corroborated, and a screen against everything submitted before. You reach them yourself and send it yourself — One Small Ask is never in the middle of the money."
       />
 
       <div className="mt-6">

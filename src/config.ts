@@ -3,7 +3,7 @@
  * hard-codes a name, an address, or a URL.
  */
 export const SITE = {
-  name: "Kindly",
+  name: "One Small Ask",
   tagline: "Small asks, answered directly.",
   region: "Colorado",
 
@@ -15,10 +15,10 @@ export const SITE = {
    * project on, and it does not put your own name in front of every requester
    * and donor on the site.
    */
-  contactEmail: "claudesigma335@gmail.com",
+  contactEmail: "rohinkethipally44@gmail.com",
 
   /** Set after the first deploy so outreach can carry a real link. */
-  publicUrl: "https://rohindacoder23.github.io/kindly.org/",
+  publicUrl: "https://rohindacoder23.github.io/onesmallask/",
 } as const;
 
 /**

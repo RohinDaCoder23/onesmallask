@@ -9,7 +9,7 @@
 function backing(): Storage | null {
   try {
     const s = window.localStorage;
-    const probe = "__kindly_probe__";
+    const probe = "__osa_probe__";
     s.setItem(probe, "1");
     s.removeItem(probe);
     return s;
