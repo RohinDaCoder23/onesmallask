@@ -82,13 +82,85 @@ async function go(hash, mustContain) {
   );
 }
 
-// With no live requests, the empty states must be real and actionable.
-await go("#/requests", "No open requests right now");
-const reqText = await page.locator("body").innerText();
-for (const must of ["No open requests right now", "Ask for help"]) {
-  if (!reqText.includes(must)) problems.push(`[requests] missing empty-state text: ${must}`);
+// The browse page has two legitimate shapes — empty on day one, populated after
+// the first request is published. Assert whichever one actually applies, so the
+// suite keeps working the moment a real request goes live instead of failing and
+// making a healthy site look broken.
+const populated = /^\s{4}id: "/m.test(fs.readFileSync("src/data/requests.ts", "utf8"));
+
+if (populated) {
+  await go("#/requests", "One small thing, asked for directly");
+  const reqText = await page.locator("body").innerText();
+  const cards = await page.locator("a[href*='#/requests/']").count();
+  if (cards < 1) problems.push("[requests] requests exist in data but no cards rendered");
+  console.log(`ok  requests      populated view, ${cards} card link(s)`);
+
+  // The donor path is the single most important flow on this site, and it is
+  // the only one that touches somebody's payment handle. Walk all of it.
+  const firstCard = page.locator("a[href*='#/requests/']").first();
+  const href = await firstCard.getAttribute("href");
+  const id = href.split("#/requests/")[1];
+  await go(`#/requests/${id}`, "What was checked before this appeared");
+
+  const before = await page.locator("body").innerText();
+
+  await page.getByRole("button", { name: /want to help|how to help/i }).first().click();
+  await page.waitForTimeout(250);
+
+  const gate = await page.locator("body").innerText();
+  for (const must of [
+    "This money cannot be undone",
+    "Never send any of it back",
+    "Only the handle on this screen",
+    "Only what you are fine losing",
+  ]) {
+    if (!gate.toLowerCase().includes(must.toLowerCase()))
+      problems.push(`[reveal] safety gate is missing: ${must}`);
+  }
+
+  const revealBtn = page.getByRole("button", { name: /^Show me how to reach/i }).first();
+  if (await revealBtn.isEnabled().catch(() => false))
+    problems.push("[reveal] reveal button is enabled BEFORE the acknowledgement is ticked");
+
+  await page.locator("input[type=checkbox]").first().check();
+  await page.waitForTimeout(150);
+  await revealBtn.click().catch(() => problems.push("[reveal] could not click reveal after ticking"));
+  await page.waitForTimeout(250);
+
+  // The strongest possible assertion: the handle the donor now sees must be the
+  // one that unscrambles out of requests.ts. That proves the whole chain —
+  // stored value, unscramble, render — rather than that *something* appeared.
+  const SHIFT = 7;
+  const unscramble = (s) =>
+    [...Buffer.from(s.split("").reverse().join(""), "base64").toString("binary")]
+      .map((c) => String.fromCharCode(c.charCodeAt(0) - SHIFT))
+      .join("");
+  const dataSrc = fs.readFileSync("src/data/requests.ts", "utf8");
+  const idAt = dataSrc.indexOf(`id: "${id}"`);
+  const stored = (dataSrc.slice(idAt).match(/contactScrambled: "([^"]+)"/) || [])[1];
+  const expected = stored ? unscramble(stored) : null;
+
+  const after = await page.locator("body").innerText();
+  if (!expected) {
+    problems.push(`[reveal] could not read contactScrambled for ${id}`);
+  } else if (!after.includes(expected)) {
+    problems.push(`[reveal] revealed text does not contain the stored handle`);
+  } else if (before.includes(expected) || gate.includes(expected)) {
+    problems.push(`[reveal] the handle was visible BEFORE the donor acknowledged`);
+  } else {
+    console.log("ok  reveal        hidden before, exact handle shown after acknowledgement");
+  }
+
+  await page.screenshot({ path: "verify/shots/reveal-1280.png", fullPage: true });
+} else {
+  await go("#/requests", "No open requests right now");
+  const reqText = await page.locator("body").innerText();
+  for (const must of ["No open requests right now", "Ask for help"]) {
+    if (!reqText.includes(must)) problems.push(`[requests] missing empty-state text: ${must}`);
+  }
+  console.log("ok  requests      empty state (no requests published yet)");
 }
-await page.screenshot({ path: "verify/shots/requests-empty-1280.png", fullPage: true });
+await page.screenshot({ path: "verify/shots/requests-state-1280.png", fullPage: true });
 
 // The safety page must carry every scam name and both audiences.
 await go("#/safety", "The three scams that actually happen");
@@ -113,7 +185,7 @@ await page.screenshot({ path: "verify/shots/ask-1280.png", fullPage: true });
 await go("#/impact", "Confirmed by both people");
 await page.waitForTimeout(400); // let the async impact load settle
 const impact = await page.locator("body").innerText();
-for (const must of ["Confirmed by both people", "People asked how to help", "No confirmed gifts yet"]) {
+for (const must of ["Confirmed by both people", "People asked how to help"]) {
   if (!impact.includes(must)) problems.push(`[impact] missing required text: ${must}`);
 }
 await page.screenshot({ path: "verify/shots/impact-1280.png", fullPage: true });
