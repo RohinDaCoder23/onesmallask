@@ -7,7 +7,7 @@ import {
   getRequest,
 } from "../data/requests";
 import { longDate, usd } from "../lib/format";
-import { FORMS, formReady } from "../config";
+import { FORMS, SITE, formReady } from "../config";
 import { useContactReveal } from "../components/ContactContext";
 import { VerifiedBadge, categoryLabel } from "../components/Cards";
 import {
@@ -171,6 +171,35 @@ export default function RequestDetail() {
                 </p>
               </>
             )}
+          </div>
+
+          <div className="mt-5">
+            <Callout title="Is this your request?" tone="brand">
+              <p className="mb-3">
+                If you are {request.name} and someone has sent you what you needed, tell us. A gift
+                is only ever counted once both people confirm it — yours is the half only you can
+                give. It also takes this down, so nobody sends twice.
+              </p>
+              {formReady(FORMS.requesterConfirm) ? (
+                <ExternalLink
+                  href={FORMS.requesterConfirm}
+                  className="inline-flex items-center justify-center rounded-full border border-brand-300 bg-white px-4 py-2 text-sm font-semibold text-brand-800 transition hover:bg-brand-50"
+                >
+                  I received it
+                </ExternalLink>
+              ) : (
+                <span className="text-sm text-sand-600">
+                  Confirmation is not open yet. Email{" "}
+                  <a
+                    href={`mailto:${SITE.contactEmail}`}
+                    className="font-semibold underline underline-offset-2"
+                  >
+                    {SITE.contactEmail}
+                  </a>{" "}
+                  instead and we will record it.
+                </span>
+              )}
+            </Callout>
           </div>
 
           <div className="mt-5">

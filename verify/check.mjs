@@ -201,6 +201,29 @@ if (/\$samsboots/.test(bundle + js)) {
   console.log("ok  privacy       no plain-text contact handles in the built bundle");
 }
 
+// Every configured form URL must actually survive into the shipped bundle.
+// A form that is set in config.ts but linked from nowhere gets tree-shaken out,
+// which is exactly how requesterConfirm went missing: the requester had no way
+// to confirm, so no gift could ever be counted by both sides.
+const cfg = fs.readFileSync("src/config.ts", "utf8");
+const formsBlock = cfg.slice(cfg.indexOf("export const FORMS"), cfg.indexOf("export function formReady"));
+const configured = [...formsBlock.matchAll(/(\w+):\s*"(https?:\/\/[^"]+)"/g)].map((m) => ({
+  key: m[1],
+  url: m[2],
+}));
+if (configured.length === 0) {
+  console.log("ok  forms         none configured yet (site shows its pending states)");
+} else {
+  const missing = configured.filter((f) => !js.includes(f.url));
+  if (missing.length) {
+    for (const m of missing) {
+      problems.push(`[forms] FORMS.${m.key} is set in config.ts but is not linked from anywhere in the site — it was dropped from the bundle`);
+    }
+  } else {
+    console.log(`ok  forms         all ${configured.length} configured form links reach the bundle`);
+  }
+}
+
 // Bare 404.html (someone types a real path instead of a hash route).
 await page.goto(new URL("some/typo", BASE).href, { waitUntil: "domcontentloaded" });
 const notFound = await page.locator("body").innerText();

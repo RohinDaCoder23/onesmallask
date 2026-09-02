@@ -150,7 +150,7 @@ export default function Ask() {
             ["We check four things.", "The video, any photo, one detail in your story, and whether it matches anything submitted before. Usually a day or two."],
             ["If it is published, you will hear from us with the link.", "If it is not, you will hear that too, with the reason. We do not leave people wondering."],
             ["Someone who wants to help reaches you directly.", "They read a safety screen, then see your handle. They send it to you themselves — it never passes through us, so there is nothing for us to take a cut of and nothing for us to lose."],
-            ["Both of you confirm.", "When you have received something, you tell us and so does the donor. Only gifts confirmed by both sides are ever counted anywhere on this site."],
+            ["Both of you confirm.", "When you have received something, you tell us on your own request page \u2014 there is an \u201cI received it\u201d button on it \u2014 and the donor tells us too. Only gifts confirmed by both sides are ever counted anywhere on this site."],
           ].map(([head, body], i) => (
             <li key={head} className="flex gap-4">
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-100 font-display text-sm font-semibold text-brand-800">
