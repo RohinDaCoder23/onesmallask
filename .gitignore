@@ -20,3 +20,6 @@ outreach/
 # Verification screenshots (regenerate with: node verify/check.mjs)
 verify/shots/
 verify/report.txt
+
+# scratch: files my sandbox could not delete
+_to_delete/
