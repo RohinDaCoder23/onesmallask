@@ -148,8 +148,9 @@ export interface ImpactTotals {
   lastRevealTs: string | null;
 }
 
-/** What the Impact page received and how much to trust it. */
-export type ImpactSource = "live" | "snapshot" | "local";
+/** What the Impact page received and how much to trust it. `demo` only exists
+ *  in a `--mode demo` build (see lib/demo.ts) and is labelled as such on the page. */
+export type ImpactSource = "live" | "snapshot" | "local" | "demo";
 
 export interface ImpactData {
   totals: ImpactTotals;

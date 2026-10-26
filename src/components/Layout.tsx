@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { SITE } from "../config";
+import { DEMO_BANNER, DEMO_MARKER, DEMO_MODE } from "../lib/demo";
 import { ExternalLink } from "./ui";
 
 const NAV = [
@@ -29,6 +30,23 @@ function Logo() {
   );
 }
 
+/**
+ * Rendered only in a `--mode demo` build, on every page, above the header. It is
+ * the thing that makes a demo honest: nobody watching can mistake the example
+ * for a real person. The data attribute is what the deploy guard greps for.
+ */
+function DemoBanner() {
+  return (
+    <div
+      role="status"
+      data-build={DEMO_MARKER}
+      className="border-b border-amber-300 bg-pending-bg px-4 py-2 text-center text-xs font-semibold leading-relaxed text-pending-fg"
+    >
+      {DEMO_BANNER}
+    </div>
+  );
+}
+
 function navClass({ isActive }: { isActive: boolean }): string {
   return `rounded-full px-3 py-2 text-sm font-semibold transition ${
     isActive ? "bg-brand-100 text-brand-800" : "text-sand-700 hover:bg-sand-100 hover:text-ink"
@@ -52,6 +70,8 @@ export function Layout({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
+
+      {DEMO_MODE ? <DemoBanner /> : null}
 
       <header className="sticky top-0 z-40 border-b border-sand-200 bg-cream/90 backdrop-blur">
         <div className="container-page flex h-16 items-center justify-between gap-4">

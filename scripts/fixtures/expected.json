@@ -1,0 +1,112 @@
+{
+  "_about": "Expected verdicts for scripts/fixtures/responses.sample.csv screened against scripts/fixtures/log.sample.csv. Row numbers are spreadsheet rows (header = 1). Codes are defined in scripts/SCREEN-SPEC.md.",
+  "rows": [
+    {
+      "row": 2,
+      "name": "Avery",
+      "verdict": "CLEAR",
+      "codes": [],
+      "tests": "a clean request passes with no codes"
+    },
+    {
+      "row": 3,
+      "name": "",
+      "verdict": "REJECT",
+      "codes": [
+        "H1",
+        "H5"
+      ],
+      "tests": "answered No to 18+, and the form ended so the required fields are blank"
+    },
+    {
+      "row": 4,
+      "name": "Dana",
+      "verdict": "REJECT",
+      "codes": [
+        "H2"
+      ],
+      "tests": "$150 is over the $100 cap"
+    },
+    {
+      "row": 5,
+      "name": "Emerson",
+      "verdict": "REJECT",
+      "codes": [
+        "H3"
+      ],
+      "tests": "Zelle mentioned in the handle"
+    },
+    {
+      "row": 6,
+      "name": "Cassandra",
+      "verdict": "REJECT",
+      "codes": [
+        "H6"
+      ],
+      "tests": "handle ' @Test-Casey ' normalises to a handle in the log that was REJECTED"
+    },
+    {
+      "row": 7,
+      "name": "Rowan",
+      "verdict": "FLAG",
+      "codes": [
+        "F2"
+      ],
+      "tests": "contact email matches an APPROVED prior submission (case differs)"
+    },
+    {
+      "row": 8,
+      "name": "Jordyn",
+      "verdict": "FLAG",
+      "codes": [
+        "F3"
+      ],
+      "tests": "story is a near-copy of Jordan's approved story"
+    },
+    {
+      "row": 9,
+      "name": "Taylor Morgan",
+      "verdict": "FLAG",
+      "codes": [
+        "F5",
+        "F6"
+      ],
+      "tests": "two-word name, and a street address in the story"
+    },
+    {
+      "row": 10,
+      "name": "Quinn",
+      "verdict": "FLAG",
+      "codes": [
+        "F7",
+        "F8"
+      ],
+      "tests": "nothing checkable ('n/a'), and only two of four boxes ticked"
+    },
+    {
+      "row": 11,
+      "name": "Sasha",
+      "verdict": "CLEAR",
+      "codes": [],
+      "tests": "clean, but the story has commas, quotes and line breaks — a CSV parser test"
+    },
+    {
+      "row": 12,
+      "name": "riley",
+      "verdict": "FLAG",
+      "codes": [
+        "F4"
+      ],
+      "tests": "same first name and area as a prior submission, everything else new"
+    },
+    {
+      "row": 13,
+      "name": "Morgan",
+      "verdict": "REJECT",
+      "codes": [
+        "H4"
+      ],
+      "tests": "a Social Security number pattern in the story"
+    }
+  ]
+}

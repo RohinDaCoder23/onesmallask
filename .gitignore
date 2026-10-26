@@ -1,5 +1,6 @@
 node_modules
 dist
+dist-demo
 dist-ssr
 *.local
 *.log
@@ -23,3 +24,13 @@ verify/report.txt
 
 # scratch: files my sandbox could not delete
 _to_delete/
+
+# A filled-in publish template holds a real person's payment handle in plain
+# text. It is an input to scripts/publish.mjs, never something to commit.
+new-request.json
+
+# Private review material: Google Forms response exports and the submissions
+# log the screening tool reads. Real people's contact details — never public.
+scripts/private/*
+!scripts/private/README.md
+screen-report.json

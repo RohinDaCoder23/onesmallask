@@ -2,6 +2,12 @@ import { chromium } from "playwright";
 import fs from "node:fs";
 
 const BASE = process.env.BASE_URL ?? "http://127.0.0.1:8099/onesmallask/";
+// OSA_DEMO=1 means the served build was made with --mode demo (bash verify/run.sh demo):
+// the labelled example is listed, so the full donor path can be exercised, and the
+// demo marker MUST be in the bundle. In a normal run the marker MUST NOT be.
+const DEMO = process.env.OSA_DEMO === "1";
+const DIST = DEMO ? "dist-demo" : "dist";
+const DEMO_MARKER = "osa-demo-build";
 const ROUTES = [
   ["landing", "#/"],
   ["requests", "#/requests"],
@@ -17,7 +23,11 @@ const ROUTES = [
 const problems = [];
 const fontNoise = [];
 const blockedHosts = new Set();
-const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" });
+// Playwright finds its own Chromium after `npx playwright install chromium`.
+// CHROMIUM_PATH overrides it for sandboxes with a preinstalled browser.
+const browser = await chromium.launch(
+  process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {},
+);
 
 for (const width of [1280, 375]) {
   const ctx = await browser.newContext({ viewport: { width, height: width === 375 ? 812 : 900 } });
@@ -86,7 +96,7 @@ async function go(hash, mustContain) {
 // the first request is published. Assert whichever one actually applies, so the
 // suite keeps working the moment a real request goes live instead of failing and
 // making a healthy site look broken.
-const populated = /^\s{4}id: "/m.test(fs.readFileSync("src/data/requests.ts", "utf8"));
+const populated = DEMO || /^\s{4}id: "/m.test(fs.readFileSync("src/data/requests.ts", "utf8"));
 
 if (populated) {
   await go("#/requests", "One small thing, asked for directly");
@@ -192,14 +202,37 @@ await page.screenshot({ path: "verify/shots/impact-1280.png", fullPage: true });
 console.log("ok  content       safety/ask/impact copy assertions passed");
 
 // Contact handles must NOT appear as plain text anywhere in the shipped bundle.
-const bundle = fs.readFileSync("dist/index.html", "utf8");
-const assets = fs.readdirSync("dist/assets").filter((f) => f.endsWith(".js"));
-const js = assets.map((f) => fs.readFileSync(`dist/assets/${f}`, "utf8")).join("\n");
-if (/\$samsboots/.test(bundle + js)) {
-  problems.push("[privacy] a contact handle is sitting in the bundle as PLAIN TEXT");
-} else {
-  console.log("ok  privacy       no plain-text contact handles in the built bundle");
+// Every handle in requests.ts is stored scrambled; unscramble each one here and
+// make sure the result is nowhere in the output. (An earlier version of this
+// check looked for a hard-coded handle with a typo in it, so it could never
+// fail. This one is derived from the data, so it fails the moment it should.)
+const bundle = fs.readFileSync(`${DIST}/index.html`, "utf8");
+const assets = fs.readdirSync(`${DIST}/assets`).filter((f) => f.endsWith(".js"));
+const js = assets.map((f) => fs.readFileSync(`${DIST}/assets/${f}`, "utf8")).join("\n");
+{
+  const SHIFT = 7;
+  const unscramble = (s) =>
+    [...Buffer.from(s.split("").reverse().join(""), "base64").toString("binary")]
+      .map((c) => String.fromCharCode(c.charCodeAt(0) - SHIFT))
+      .join("");
+  const stored = [...fs.readFileSync("src/data/requests.ts", "utf8").matchAll(/contactScrambled: "([^"]+)"/g)]
+    .map((m) => unscramble(m[1]));
+  const leaked = stored.filter((h) => h && (bundle + js).includes(h));
+  if (stored.length === 0) {
+    problems.push("[privacy] found no contactScrambled values in requests.ts — the check has nothing to test");
+  } else if (leaked.length) {
+    problems.push(`[privacy] ${leaked.length} contact handle(s) are sitting in the bundle as PLAIN TEXT`);
+  } else {
+    console.log(`ok  privacy       none of the ${stored.length} stored handle(s) appear in plain text in the bundle`);
+  }
 }
+
+// Demo mode must be compiled in ONLY under --mode demo. Same check as deploy.yml.
+const hasMarker = (bundle + js).includes(DEMO_MARKER);
+if (DEMO && !hasMarker) problems.push("[demo] this is meant to be a demo build but the demo marker is missing");
+if (!DEMO && hasMarker) problems.push("[demo] DEMO-MODE CODE IS IN THE PRODUCTION BUNDLE — this must never deploy");
+if (!DEMO && !hasMarker) console.log("ok  demo          no demo-mode code in the production bundle");
+if (DEMO && hasMarker) console.log("ok  demo          demo marker present, as expected for a demo build");
 
 // Every configured form URL must actually survive into the shipped bundle.
 // A form that is set in config.ts but linked from nowhere gets tree-shaken out,

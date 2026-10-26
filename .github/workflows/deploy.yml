@@ -59,6 +59,18 @@ jobs:
           grep -q './assets/' dist/index.html || { echo "::error::asset paths are not relative — check base in vite.config.ts"; exit 1; }
           echo "Build verified:"; ls -la dist
 
+      - name: Refuse to deploy a demo build
+        # `npm run demo` compiles in a labelled example request so the site can be
+        # shown end to end on a laptop (see src/lib/demo.ts). That code is only
+        # ever built with --mode demo, and this step makes sure it can never reach
+        # the live site even if the build command above is changed one day.
+        run: |
+          if grep -rq "osa-demo-build" dist/; then
+            echo "::error::demo-mode marker found in the production bundle - refusing to deploy"
+            exit 1
+          fi
+          echo "No demo-mode code in the bundle."
+
       - name: Upload the site
         uses: actions/upload-pages-artifact@v3
         with:

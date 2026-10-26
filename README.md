@@ -72,14 +72,24 @@ src/
 │  ├─ tracking.ts        Reveal logging, retry queue, 3-tier impact read
 │  ├─ supabase.ts        ~90-line PostgREST client (no SDK dependency)
 │  ├─ storage.ts         localStorage that cannot throw
-│  └─ format.ts          Currency, dates, hostnames
+│  ├─ format.ts          Currency, dates, hostnames
+│  └─ demo.ts            Local-only demo mode; dead code in every real build
 │
 ├─ components/          Layout, ErrorBoundary, Cards,
 │                       ContactContext (the safety gate), ui primitives
 └─ pages/               Landing, Requests, RequestDetail, Ask, Safety,
                         Impact, About, NotFound
 
-scripts/scramble.mjs    Turns a handle into its stored form
+scripts/
+├─ publish.mjs          Publish, fulfil or remove a request without hand-editing
+├─ scramble.mjs         Turns a handle into its stored form
+├─ SCREEN-SPEC.md       Duplicate-screening tool: the rules, written down first
+├─ screen.test.mjs      Its test runner, against scripts/fixtures/
+│                       (screen.mjs itself is in progress — see Review tooling)
+├─ create-forms.gs      Apps Script that builds the four Google Forms
+├─ fix-form.gs          Apps Script: in-form video upload + the review email
+└─ private/             Form exports and the submissions log. Git-ignored.
+
 supabase/schema.sql     Optional tracking database
 verify/run.sh           The whole verification suite, one command
 ```
@@ -139,6 +149,18 @@ the donor can corroborate the amount.
 
 ---
 
+## If you work at an organization
+
+You do not need to set anything up, sign anything, or accept any form of payment. Money never
+goes to an organization through One Small Ask: it goes from one person directly to the person
+who asked, on that person's own Cash App, PayPal or Venmo, and One Small Ask is not in the
+middle of it either. Organizations cannot post requests — every listing is one adult, on
+camera, asking for one specific thing under $100.
+
+The only thing asked of a case manager, a pantry or a shelter is a sentence: if someone you
+serve has a small, one-off gap, tell them this exists, alongside 211 and everything else you
+already do. That is the whole integration. `/about` says the same thing on the site.
+
 ## Privacy
 
 One row per reveal: which request, the amount, the date, and a random per-browser id. No
@@ -154,12 +176,17 @@ cannot read raw rows or write a confirmed gift.
 ```bash
 npm install
 npm run dev          # local dev server
+npm run demo         # dev server in demo mode — see "Demo mode" below
 npm run typecheck    # tsc --noEmit, strict, no `any`
 npm run build        # typecheck + production build to dist/
+npm run build:demo   # demo build to dist-demo/ (never deployed; the workflow checks)
 npm run preview      # serve the production build
+npm run screen:test  # run the screening tool against its fixtures
 
 node scripts/scramble.mjs '$handle'   # prepare a contact handle for requests.ts
-bash verify/run.sh                    # the full browser suite
+node scripts/publish.mjs --help       # publish / fulfil / remove a request
+bash verify/run.sh                    # the full browser suite (production build)
+bash verify/run.sh demo               # the same suite against the demo build
 ```
 
 ### Verification suite
@@ -172,19 +199,84 @@ It checks all 9 routes at 1280px and 375px for console errors, page errors, fail
 requests, horizontal overflow and empty renders. Then it asserts the safety copy is
 actually present (all three named scams, both audiences, the irreversibility warning),
 that the example request is labelled as an example, that the 18+ rule appears, that the
-Impact page leads with the two-numbers distinction, **that no contact handle appears as
-plain text anywhere in the built bundle**, and that the static 404 resolves correctly.
-Screenshots land in `verify/shots/`.
+Impact page leads with the two-numbers distinction, **that no stored contact handle
+appears as plain text anywhere in the built bundle** (each one is unscrambled from
+`requests.ts` and searched for, so the check is derived from the data rather than
+hard-coded), **that no demo-mode code is in the production bundle**, and that the static
+404 resolves correctly. Against the demo build (`bash verify/run.sh demo`) it also drives
+the whole donor path: safety gate shown, reveal button disabled until the acknowledgement
+is ticked, and the exact handle appearing only afterwards. Screenshots land in
+`verify/shots/`.
 
-Playwright is deliberately **not** a dependency — that keeps CI's `npm ci` fast and unable
-to fail on a browser download:
+Playwright is a dev dependency; the browser itself is a one-time install:
 
 ```bash
-npm i -D playwright && npx playwright install chromium
+npx playwright install chromium
 bash verify/run.sh
 ```
 
 ---
+
+## Demo mode (local only)
+
+The live site launches empty and stays that way until a real person has been through the
+full review. That is the right rule for a page strangers send money from, and the wrong shape
+for showing someone how the site works. So:
+
+```bash
+npm run demo
+```
+
+starts the dev server with `--mode demo`, which lists the worked example from the Ask page
+(Sam, $45, steel-toe boots) as if it were an open request, puts a banner on every page saying
+exactly that, shows labelled demo figures on `/impact`, and switches the database off so
+nothing done in a demo is recorded. The whole donor path can then be walked on a laptop.
+
+It cannot leak. The flag is a compile-time constant (`__OSA_DEMO__` in `vite.config.ts`), so
+in a normal build every demo branch is dead code and is stripped from the bundle; the deploy
+workflow then greps the output for the demo marker and refuses to publish if it is ever
+present, and `verify/check.mjs` asserts the same thing. `src/lib/demo.ts` has the details.
+
+## Review tooling
+
+Three of the four review checks need a human. The fourth — screening a new submission
+against everything submitted before — gets harder every month and is the one a computer is
+good at. `scripts/SCREEN-SPEC.md` specifies a tool for it: it reads the Google Forms
+responses export and the private submissions log, applies a fixed set of rules (the hard
+lines that mean an automatic no, and the duplicate checks on handle, contact, name, area and
+story similarity that mean a person needs to look), and prints a verdict with reasons,
+never publishing anything. `npm run screen:test` checks an implementation against twelve
+fixture submissions with known answers. **The implementation, `scripts/screen.mjs`, is in
+progress and not in the repository yet** — until it lands, the duplicate screen is done by
+hand against the log, exactly as `MODERATION.md` Part 3 describes.
+
+`scripts/publish.mjs` then does the publishing: it validates the same hard lines, scrambles
+the handle, and inserts the entry into `src/data/requests.ts`, refusing anything that would
+break a promise made on `/safety`. The Google Forms themselves are built by
+`scripts/create-forms.gs`, and `scripts/fix-form.gs` adds the in-form video upload and the
+review email that arrives for every new submission.
+
+## Who built this, and how
+
+One Small Ask is built and run by **Rohin Kethipally**, a high-school student in Parker,
+Colorado. The product and safety decisions are his: the peer-to-peer model, never touching
+the money, the $5–$100 cap, 18+ only, no Zelle, the two-numbers rule, launching empty, and
+the four-check review standard. He runs it day to day — reviewing submissions, the Google
+Forms intake, and the outreach to Colorado organizations.
+
+**AI assistance, disclosed in full.** Parts of the code were written by Rohin directly.
+Claude (Anthropic) was used to build the user interface, to review the code, to set up the
+GitHub Pages deployment, to add the local demo mode and its deploy guard, and to generate
+some of the Google Forms scripts; most of the documentation in this repository was drafted
+with AI assistance. The duplicate-screening tool's spec, fixtures and test runner
+(`scripts/SCREEN-SPEC.md`, `scripts/fixtures/`, `scripts/screen.test.mjs`) were
+AI-generated so that the tool can be checked against a fixed, independent standard; the
+tool itself, `scripts/screen.mjs`, is Rohin's to write without AI code generation and is
+not in the repository until he commits it.
+
+Open-source dependencies: React, React Router, Vite, TypeScript and Tailwind CSS, plus
+Playwright for the verification suite. Fonts are Fraunces and Plus Jakarta Sans from Google
+Fonts. Everything else in this repository is first-party.
 
 ## Legal posture
 

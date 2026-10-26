@@ -13,6 +13,7 @@ import {
   insertReveals,
   trackingConfigured,
 } from "./supabase";
+import { DEMO_MODE, demoImpact } from "./demo";
 
 const K_SESSION = "osa.session.v1";
 const K_REVEALS = "osa.reveals.v1";
@@ -153,6 +154,10 @@ function fromSnapshot(): ImpactData {
  * never shows an error page.
  */
 export async function loadImpact(): Promise<ImpactData> {
+  // Demo build only: labelled demo figures, with this browser's own reveals so
+  // the "asked how to help" number visibly moves during a walkthrough.
+  if (DEMO_MODE) return demoImpact(localReveals().length);
+
   if (trackingConfigured) {
     const [totals, confirmed] = await Promise.all([fetchTotals(), fetchConfirmed()]);
     if (totals !== null) {

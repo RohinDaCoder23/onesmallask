@@ -3,12 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "One Small Ask - a needs board that routes donors directly to Front Range nonprofits' own donation pages.",
+  "description": "One Small Ask - a reviewed noticeboard where one person posts one small, specific need ($5-$100) and someone who wants to help sends it to them directly. The site never touches the money.",
   "scripts": {
     "dev": "vite",
-    "typecheck": "tsc --noEmit",
+    "demo": "vite --mode demo",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --port 4173"
+    "build:demo": "tsc --noEmit && vite build --mode demo",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --port 4173",
+    "screen:test": "node scripts/screen.test.mjs"
   },
   "dependencies": {
     "react": "18.3.1",

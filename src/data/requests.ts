@@ -1,4 +1,5 @@
 import type { HelpRequest } from "../types";
+import { DEMO_MODE, demoRequests } from "../lib/demo";
 
 /**
  * ============================================================================
@@ -138,12 +139,22 @@ export function daysLeft(request: HelpRequest, now: Date = new Date()): number {
   return Math.max(0, Math.ceil(EXPIRY_DAYS - used));
 }
 
+/**
+ * Everything the pages read from. In a normal build this is exactly REQUESTS.
+ * Under `npm run demo` it also contains the labelled example, so the donor path
+ * can be shown end to end on a laptop; see lib/demo.ts for why that branch can
+ * never reach the live site.
+ */
+function allRequests(): readonly HelpRequest[] {
+  return DEMO_MODE ? [...REQUESTS, ...demoRequests(EXAMPLE_REQUEST)] : REQUESTS;
+}
+
 export function openRequests(): HelpRequest[] {
-  return REQUESTS.filter((r) => effectiveStatus(r) === "open");
+  return allRequests().filter((r) => effectiveStatus(r) === "open");
 }
 
 export function getRequest(id: string | undefined): HelpRequest | undefined {
-  return id ? REQUESTS.find((r) => r.id === id) : undefined;
+  return id ? allRequests().find((r) => r.id === id) : undefined;
 }
 
 /**

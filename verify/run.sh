@@ -11,19 +11,27 @@ PORT="${PORT:-8099}"
 ROOT="/tmp/osa-verify-$$"
 SITE="$ROOT/onesmallask"        # subpath, so we reproduce the real deploy shape
 
+# `bash verify/run.sh demo` verifies the --mode demo build instead: the labelled
+# example is listed, so the whole donor path (safety gate -> reveal) gets driven.
+MODE="${1:-prod}"
+case "$MODE" in
+  prod) DIST="dist";      BUILD="npm run build";      export OSA_DEMO=0 ;;
+  demo) DIST="dist-demo"; BUILD="npm run build:demo"; export OSA_DEMO=1 ;;
+  *) echo "usage: bash verify/run.sh [prod|demo]"; exit 2 ;;
+esac
+
 command -v node >/dev/null || { echo "node is required"; exit 1; }
 [ -d node_modules/playwright ] || {
-  echo "Playwright is not installed (it is deliberately not a dependency)."
-  echo "Run: npm i -D playwright && npx playwright install chromium"
+  echo "Playwright is not installed. Run: npm install && npx playwright install chromium"
   exit 1
 }
 
-echo "==> Building"
-npm run build
+echo "==> Building ($MODE)"
+$BUILD
 
 echo "==> Preparing $SITE"
 mkdir -p "$SITE"
-cp -r dist/. "$SITE/"
+cp -r "$DIST"/. "$SITE/"
 
 echo "==> Serving on 127.0.0.1:$PORT"
 SERVE_ROOT="$ROOT" python3 verify/ghpages_server.py "$PORT" &
@@ -35,7 +43,7 @@ cleanup() {
 trap cleanup EXIT
 
 for _ in $(seq 1 20); do
-  if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/onesmallask/"; then break; fi
+  if curl -fsS -o /dev/null "http://127.0.0.1:$PORT/onesmallask/" 2>/dev/null; then break; fi
   sleep 0.25
 done
 

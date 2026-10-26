@@ -32,13 +32,13 @@ export const SITE = {
  */
 export const FORMS = {
   /** Where someone asks for help. Feeds your private review queue. */
-  submitRequest: "https://forms.gle/oSLPd32EQtSgcrpDA",
+  submitRequest: "https://forms.gle/jZziCxQPoBerrtFV8",
   /** Donor says "I sent it." One half of a confirmed gift. */
-  donorConfirm: "https://forms.gle/NGSYGM8EyNrqNvPC9",
+  donorConfirm: "https://forms.gle/jJL6BRo8YVDMV1Jo8",
   /** Requester says "I received it." The other half. */
-  requesterConfirm: "https://forms.gle/Fxa49NdoitWaAcvz7",
+  requesterConfirm: "https://forms.gle/zWN5pcfzm9DzQ4Go7",
   /** Anyone flagging a request as suspicious, or asking to be removed. */
-  reportConcern: "https://forms.gle/VhmiEFyy7ZMCZVRUA",
+  reportConcern: "https://forms.gle/MV4XEPdQ96KowhfG9",
 } as const;
 
 export function formReady(url: string): boolean {

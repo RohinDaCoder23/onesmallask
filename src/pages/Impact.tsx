@@ -34,6 +34,7 @@ function emptyData(): ImpactData {
 }
 
 function SourceBadge({ data }: { data: ImpactData }) {
+  if (data.source === "demo") return <Badge tone="pending">Demo data — not real</Badge>;
   if (data.source === "live") return <Badge tone="success">Live</Badge>;
   if (data.source === "local") return <Badge tone="pending">This device only</Badge>;
   return <Badge tone="sand">Saved snapshot</Badge>;
@@ -111,7 +112,7 @@ export default function Impact() {
               <div className="mt-2 text-sm font-semibold text-ink">Confirmed by both people</div>
               <p className="mt-1 text-xs leading-relaxed text-sand-700">
                 {data.totals.confirmedGifts > 0
-                  ? `${num(data.totals.confirmedGifts)} gifts where the donor said they sent it AND the requester said they received it.`
+                  ? `${num(data.totals.confirmedGifts)} ${data.totals.confirmedGifts === 1 ? "gift" : "gifts"} where the donor said they sent it AND the requester said they received it.`
                   : "The only figure here that is money. It stays at zero until a donor and a requester both confirm the same gift."}
               </p>
             </div>
@@ -238,9 +239,11 @@ export default function Impact() {
                 anywhere on this site.
               </p>
               <p>
-                {trackingConfigured
-                  ? "Rows go to a database that this site's public key can only write to, never read. The aggregate figures above are the only thing it can read back."
-                  : "The live database is not configured on this build, so these are the figures committed to the repository. Nothing is invented to fill the gap."}
+                {data.source === "demo"
+                  ? "This is a demo build. The figures above are placeholders for showing how the page works, and nothing done here is sent anywhere."
+                  : trackingConfigured
+                    ? "Rows go to a database that this site's public key can only write to, never read. The aggregate figures above are the only thing it can read back."
+                    : "The live database is not configured on this build, so these are the figures committed to the repository. Nothing is invented to fill the gap."}
               </p>
             </Callout>
           </section>

@@ -1,4 +1,5 @@
 import type { ConfirmedGift, ContactReveal } from "../types";
+import { DEMO_MODE } from "./demo";
 
 /**
  * A ~90-line PostgREST client instead of @supabase/supabase-js.
@@ -12,8 +13,10 @@ import type { ConfirmedGift, ContactReveal } from "../types";
 const URL_BASE = (import.meta.env.VITE_SUPABASE_URL ?? "").trim().replace(/\/+$/, "");
 const ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY ?? "").trim();
 
-/** True only when both values are present at build time. */
-export const trackingConfigured: boolean = URL_BASE.length > 0 && ANON_KEY.length > 0;
+/** True only when both values are present at build time — and never in a demo
+ *  build, so nothing done while showing the site on a laptop is recorded. */
+export const trackingConfigured: boolean =
+  !DEMO_MODE && URL_BASE.length > 0 && ANON_KEY.length > 0;
 
 const TIMEOUT_MS = 6000;
 

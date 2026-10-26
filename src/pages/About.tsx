@@ -95,6 +95,21 @@ export default function About() {
           wonder later whether the early ones were flattering.
         </p>
 
+        <h2>If you work at an organization</h2>
+        <p>
+          You do not need to set anything up, sign anything, or accept any kind of payment. Money
+          never goes to an organization through {SITE.name}. It goes from one person directly to
+          the person who asked, on that person&rsquo;s own Cash App, PayPal or Venmo, and{" "}
+          {SITE.name} is not in the middle of it either.
+        </p>
+        <p>
+          The only thing we ask of a case manager, a pantry or a shelter is a sentence: if someone
+          you serve has one small, one-off gap — bus fare to a new job, a co-pay, work boots — tell
+          them this exists, alongside 211 and everything else you already do. Organizations
+          cannot post requests here, and there is nothing to integrate: every listing is one adult,
+          on camera, asking for one specific thing under {usd(MAX_ASK_USD)}.
+        </p>
+
         <h2>If you need help</h2>
         <p>
           {SITE.name} is slow on purpose and nobody is obliged to answer a request. It is not a
