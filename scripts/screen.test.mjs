@@ -8,7 +8,8 @@
  * verdict and rule codes with scripts/fixtures/expected.json. It tells you, in plain
  * words, which rows pass, which fail, and which rule in SCREEN-SPEC.md to look at.
  *
- * This runner and the fixtures were generated with AI. The tool it tests is not.
+ * This runner, the fixtures and the tool were all generated with AI assistance and are
+ * reviewed and run by Rohin; see README.md, "Who built this, and how".
  */
 
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
@@ -31,10 +32,10 @@ const dim = (s) => `\x1b[2m${s}\x1b[0m`;
 
 if (!existsSync(TOOL)) {
   console.log(`
-  ${bold("scripts/screen.mjs does not exist yet.")}
+  ${bold("scripts/screen.mjs does not exist.")}
 
-  That is the file you are writing. Start with scripts/SCREEN-SPEC.md — section 5 has a
-  level-by-level path, and this runner will start passing rows as soon as Level 2 works.
+  It should be next to this file. Restore it from git, or rebuild it to scripts/SCREEN-SPEC.md —
+  section 5 is the order to build in, and this runner reports rows as each level lands.
 `);
   process.exit(1);
 }

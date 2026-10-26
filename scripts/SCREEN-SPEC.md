@@ -1,9 +1,10 @@
-# `screen.mjs` — the duplicate-screening tool. Spec and build guide.
+# `screen.mjs` — the duplicate-screening tool. The spec it was built to.
 
-**You write this one.** This document, the fixtures in `scripts/fixtures/`, and the test
-runner `scripts/screen.test.mjs` were generated with AI. The tool itself — `scripts/screen.mjs`
-— is yours, start to finish, and the README says so. Keep it that way: if you get stuck, ask
-for an explanation of a concept or a hint about an approach, not for the code.
+This document was written first and the tool was built to it, so the rules are checkable
+against something other than the code. The spec, the fixtures in `scripts/fixtures/`, the
+test runner `scripts/screen.test.mjs` and the tool itself were all generated with AI
+assistance, reviewed and run by Rohin (see README.md, "Who built this, and how"). The hard
+lines the tool enforces are the site's own, from `MODERATION.md`.
 
 Run the tests any time with:
 
@@ -11,8 +12,9 @@ Run the tests any time with:
 npm run screen:test
 ```
 
-Until `scripts/screen.mjs` exists the runner says so and stops. Once it exists, the runner
-tells you row by row what passed, what failed, and which rule to look at.
+The runner reports row by row what passed, what failed, and which rule to look at. If you
+change a rule here, change the tool and the fixtures' `expected.json` to match — the three
+are meant to agree.
 
 ---
 
@@ -173,9 +175,9 @@ and `"riley.test@example.com"` must come out identical.
 | **F8** | Fewer than all four acknowledgement statements are present in the "Tick all four" cell. |
 
 **On F8:** the cell holds the ticked statements joined with `, ` — but the statements
-themselves contain commas, so splitting on commas is wrong. Instead, keep the four exact
-statements in your code (copy them from `scripts/create-forms.gs`, lines 128–133) and count
-how many of the four appear in the cell as substrings.
+themselves contain commas, so splitting on commas is wrong. Instead, the tool keeps the four
+exact statements (copied from `scripts/create-forms.gs`, lines 128–133) and counts how many
+of the four appear in the cell as substrings.
 
 **On F3, story similarity.** Keep it simple and deterministic:
 
@@ -187,13 +189,13 @@ how many of the four appear in the cell as substrings.
 5. Jaccard similarity = (size of the intersection) ÷ (size of the union).
 
 Flag when it's ≥ 0.6 against any log story. The fixture is built so that the one near-copy
-scores well above 0.6 and every other pair scores well below it — you do not need to tune
-the threshold, and if a different story is firing F3 the bug is in the tokeniser.
+scores well above 0.6 and every other pair scores well below it — the threshold needs no
+tuning, and if a different story ever fires F3 the bug is in the tokeniser.
 
-## 5. A way to build it, in levels
+## 5. How it is built, in levels
 
-You don't have to do it this way. It's one path that gets a passing test at each step, so
-you're never debugging more than one thing at once.
+The implementation follows this order. It is also the order to debug in when a test fails:
+each level has its own rows in the fixture, so a failure points at one thing.
 
 **Level 1 — read the files.** Write `parseCsv(text) → string[][]`. One pass over the text,
 one character at a time, with two pieces of state: *am I inside quotes?* and *the cell I'm
@@ -232,7 +234,7 @@ booleans left `false` because you haven't done the review yet. Refuse (exit 1) i
 verdict is REJECT. The test runner checks this only if the flag exists; until then it says
 "skipped".
 
-## 6. Things worth knowing before you start
+## 6. Things worth knowing when reading or changing it
 
 - `Number("88")` is 88. `Number("$88")` is `NaN`. `Number("")` is `0`, which would pass H2 —
   so check for blank first (that's H5's job) and use `Number.isFinite`.
@@ -248,5 +250,4 @@ verdict is REJECT. The test runner checks this only if the flag exists; until th
 - `npm run screen:test` prints 12 passes.
 - `node scripts/screen.mjs scripts/fixtures/responses.sample.csv scripts/fixtures/log.sample.csv`
   prints a report you'd be happy to read on your phone.
-- You can explain every line of it on camera. That's the real test, and the reason this
-  file is a spec and not a solution.
+- Every rule in §4 has a row in the fixture that would fail if the rule were removed.

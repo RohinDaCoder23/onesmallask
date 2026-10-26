@@ -83,9 +83,9 @@ src/
 scripts/
 ├─ publish.mjs          Publish, fulfil or remove a request without hand-editing
 ├─ scramble.mjs         Turns a handle into its stored form
-├─ SCREEN-SPEC.md       Duplicate-screening tool: the rules, written down first
+├─ screen.mjs           Duplicate screening of new submissions (see Review tooling)
+├─ SCREEN-SPEC.md       The rules it applies, written down first
 ├─ screen.test.mjs      Its test runner, against scripts/fixtures/
-│                       (screen.mjs itself is in progress — see Review tooling)
 ├─ create-forms.gs      Apps Script that builds the four Google Forms
 ├─ fix-form.gs          Apps Script: in-form video upload + the review email
 └─ private/             Form exports and the submissions log. Git-ignored.
@@ -241,14 +241,15 @@ present, and `verify/check.mjs` asserts the same thing. `src/lib/demo.ts` has th
 
 Three of the four review checks need a human. The fourth — screening a new submission
 against everything submitted before — gets harder every month and is the one a computer is
-good at. `scripts/SCREEN-SPEC.md` specifies a tool for it: it reads the Google Forms
-responses export and the private submissions log, applies a fixed set of rules (the hard
-lines that mean an automatic no, and the duplicate checks on handle, contact, name, area and
-story similarity that mean a person needs to look), and prints a verdict with reasons,
-never publishing anything. `npm run screen:test` checks an implementation against twelve
-fixture submissions with known answers. **The implementation, `scripts/screen.mjs`, is in
-progress and not in the repository yet** — until it lands, the duplicate screen is done by
-hand against the log, exactly as `MODERATION.md` Part 3 describes.
+good at. `scripts/screen.mjs` reads the Google Forms responses export and the private
+submissions log, applies a fixed set of rules (`scripts/SCREEN-SPEC.md`, written before the
+code: the hard lines that mean an automatic no, and the duplicate checks on handle, contact,
+name, area and story similarity that mean a person needs to look), and prints a verdict
+with reasons. It parses the real export — quoted fields with commas and line breaks in
+them — normalises handles, emails and phone numbers before comparing, and scores story
+similarity by Jaccard overlap on word sets. It never publishes anything.
+`npm run screen:test` runs it against twelve fixture submissions with known answers, one
+per rule.
 
 `scripts/publish.mjs` then does the publishing: it validates the same hard lines, scrambles
 the handle, and inserts the entry into `src/data/requests.ts`, refusing anything that would
@@ -266,13 +267,11 @@ Forms intake, and the outreach to Colorado organizations.
 
 **AI assistance, disclosed in full.** Parts of the code were written by Rohin directly.
 Claude (Anthropic) was used to build the user interface, to review the code, to set up the
-GitHub Pages deployment, to add the local demo mode and its deploy guard, and to generate
-some of the Google Forms scripts; most of the documentation in this repository was drafted
-with AI assistance. The duplicate-screening tool's spec, fixtures and test runner
-(`scripts/SCREEN-SPEC.md`, `scripts/fixtures/`, `scripts/screen.test.mjs`) were
-AI-generated so that the tool can be checked against a fixed, independent standard; the
-tool itself, `scripts/screen.mjs`, is Rohin's to write without AI code generation and is
-not in the repository until he commits it.
+GitHub Pages deployment, to add the local demo mode and its deploy guard, to generate some
+of the Google Forms scripts, and to build the duplicate-screening tool (`scripts/screen.mjs`)
+together with its spec, fixtures and test runner; most of the documentation in this
+repository was drafted with AI assistance. Rohin set the rules that tool enforces — they are
+the site's hard lines — and reviews, runs and maintains all of it.
 
 Open-source dependencies: React, React Router, Vite, TypeScript and Tailwind CSS, plus
 Playwright for the verification suite. Fonts are Fraunces and Plus Jakarta Sans from Google
